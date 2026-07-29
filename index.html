@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow & Memories | Private Collection</title>
+    
+    <!-- Google Fonts: Премиальная типографика -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           1. СБРОС И ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ (PREMIUM DARK)
+           ========================================== */
+        :root {
+            --bg-color: #0b0b0e;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-gold: linear-gradient(135deg, #f39c12, #f1c40f, #e67e22);
+            --accent-glow: rgba(243, 156, 18, 0.25);
+            --text-main: #f0f0f5;
+            --text-muted: #a0a0b0;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Ambient Background Glow */
+        .ambient-glow {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(80px);
+        }
+
+        /* ==========================================
+           2. ТИПОГРАФИКА И ШАПКА
+           ========================================== */
+        header {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        header .subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #f39c12;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            background: linear-gradient(180deg, #ffffff 30%, #a0a0b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+        }
+
+        header p {
+            max-width: 600px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, #f39c12, transparent);
+            animation: pulseLine 2s infinite;
+        }
+
+        @keyframes pulseLine {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.4); opacity: 0.3; }
+        }
+
+        /* ==========================================
+           3. СЕКЦИИ И СЕТКИ
+           ========================================== */
+        section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 25px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .section-title span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* Галерея Фото */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .photo-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            aspect-ratio: 3 / 4;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+            filter: brightness(0.9) contrast(1.05);
+        }
+
+        .photo-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(243, 156, 18, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px var(--accent-glow);
+        }
+
+        .photo-card:hover img {
+            transform: scale(1.06);
+            filter: brightness(1);
+        }
+
+        .photo-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(11,11,14,0.9) 0%, transparent 60%);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .photo-card:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-caption {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        /* Секция Видео (Lip-sync & Highlights) */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .video-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 9 / 16;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-info {
+            margin-top: 15px;
+            padding: 5px 10px;
+        }
+
+        .video-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .video-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #f39c12;
+        }
+
+        /* ==========================================
+           4. LIGHTBOX
+           ========================================== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        .lightbox-close:hover {
+            opacity: 1;
+        }
+
+        /* ==========================================
+           5. FOOTER
+           ========================================== */
+        footer {
+            text-align: center;
+            padding: 80px 20px;
+            border-top: 1px solid var(--card-border);
+            margin-top: 100px;
+        }
+
+        footer h3 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 60px 15px; }
+            .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .video-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <header>
+        <div class="subtitle">Private Archive // Est. 2026</div>
+        <h1>История Одной Дружбы</h1>
+        <p>Каждый момент, запечатлённый здесь — это атмосфера, громкий смех, любимые треки и воспоминания, которые останутся навсегда.</p>
+        
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </header>
+
+    <!-- Секция Фотогалереи (Генерируется из JS) -->
+    <section id="gallery">
+        <div class="section-title">
+            <span>Moments & Aesthetics</span>
+            <h2>Галерея Воспоминаний</h2>
+        </div>
+
+        <div class="photo-grid" id="photoContainer"></div>
+    </section>
+
+    <!-- Секция Видео (Генерируется из JS) -->
+    <section id="videos">
+        <div class="section-title">
+            <span>Performance & Lipsync</span>
+            <h2>Видео Архив</h2>
+        </div>
+
+        <div class="video-grid" id="videoContainer"></div>
+    </section>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Full View">
+    </div>
+
+    <footer>
+        <h3>Best Friends Forever</h3>
+        <p>Специально создано, чтобы сохранить самые ценные моменты в лучшем виде.</p>
+    </footer>
+
+    <script>
+        /* ==========================================
+           МАССИВЫ С ФАЙЛАМИ
+           ========================================== */
+        
+        // Автоматическая генерация photo1.jpg ... photo15.jpg
+        const photos = Array.from({ length: 15 }, (_, i) => `photo${i + 1}.jpg`);
+
+        // Автоматическая генерация video1.mp4 ... video4.mp4
+        const videos = Array.from({ length: 4 }, (_, i) => `video${i + 1}.mp4`);
+
+        /* ИЛИ если нужны файлы в папках (например, img/photo1.jpg), измените так:
+           const photos = Array.from({ length: 15 }, (_, i) => `img/photo${i + 1}.jpg`);
+        */
+
+        // РЕНДЕР ФОТОГАЛЕРЕИ
+        const photoContainer = document.getElementById('photoContainer');
+        photos.forEach((src, index) => {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+            card.onclick = () => openLightbox(src);
+
+            card.innerHTML = `
+                <img src="${src}" alt="Memory ${index + 1}" loading="lazy">
+                <div class="photo-overlay">
+                    <div class="photo-caption">Moment #${index + 1}</div>
+                </div>
+            `;
+            photoContainer.appendChild(card);
+        });
+
+        // РЕНДЕР ВИДЕОГАЛЕРЕИ
+        const videoContainer = document.getElementById('videoContainer');
+        videos.forEach((src, index) => {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+
+            card.innerHTML = `
+                <div class="video-wrapper">
+                    <video controls preload="metadata">
+                        <source src="${src}" type="video/mp4">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                </div>
+                <div class="video-info">
+                    <div class="video-tag">Lipsync / Clip #${index + 1}</div>
+                    <div class="video-title">Видео запись ${index + 1}</div>
+                </div>
+            `;
+            videoContainer.appendChild(card);
+        });
+
+        // ЛАЙТБОКС (Просмотр фото)
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+</body>
+</html>
