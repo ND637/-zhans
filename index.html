@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P3PNZKS4');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glow & Memories | Private Collection</title>
@@ -338,6 +346,10 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P3PNZKS4"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <div class="ambient-glow"></div>
 
@@ -352,7 +364,7 @@
         </div>
     </header>
 
-    <!-- Секция Фотогалереи (Генерируется из JS) -->
+    <!-- Секция Фотогалереи -->
     <section id="gallery">
         <div class="section-title">
             <span>Moments & Aesthetics</span>
@@ -362,7 +374,7 @@
         <div class="photo-grid" id="photoContainer"></div>
     </section>
 
-    <!-- Секция Видео (Генерируется из JS) -->
+    <!-- Секция Видео -->
     <section id="videos">
         <div class="section-title">
             <span>Performance & Lipsync</span>
@@ -390,12 +402,8 @@
         // Автоматическая генерация photo1.jpg ... photo15.jpg
         const photos = Array.from({ length: 15 }, (_, i) => `photo${i + 1}.jpg`);
 
-        // Автоматическая генерация video1.mp4 ... video4.mp4
-        const videos = Array.from({ length: 4 }, (_, i) => `video${i + 1}.mp4`);
-
-        /* ИЛИ если нужны файлы в папках (например, img/photo1.jpg), измените так:
-           const photos = Array.from({ length: 15 }, (_, i) => `img/photo${i + 1}.jpg`);
-        */
+        // Теперь 9 видео: video1.mp4 ... video9.mp4
+        const videos = Array.from({ length: 9 }, (_, i) => `video${i + 1}.mp4`);
 
         // РЕНДЕР ФОТОГАЛЕРЕИ
         const photoContainer = document.getElementById('photoContainer');
